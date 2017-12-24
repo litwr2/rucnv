@@ -1,8 +1,10 @@
 # rucnv
 Encoding converter for texts in Russian language
 
-##General Information
+## General Information
 Up to 14 different encodings are used to represent texts in Russian language (koi-7, koi-8r, cp866, cp1251, cp10007, utf-8, ...)! This program can perform conversion between them. It also can produce Unicode names for the symbol codes.
+
+It shows the unicodes that cannot be converted.  It allows to put two types of substitutions for inconvertible signs.  It may be a unicode number or a similar sign.
 
 This program may also be used for transliteration (reversible substitution Cyrillic letters by Latin ones). Transliteration is the only way to make deal with Russian texts on the system without Cyrillic fonts. RUCNV knows two types of transliteration: GOST 7.79-2000 and KOI-7 based.
 
@@ -11,7 +13,7 @@ RUCNV may be used for conversion any Russian or Unicode texts into the form whic
 This program is distributed under the GNU General Public License.
 
 
-##Basic Installation
+## Basic Installation
 You need C++ compiler and C++ Standard Library.
 
 The simplest way to make this program is:
@@ -21,7 +23,7 @@ The simplest way to make this program is:
 3. Type `make install' to install the program and documentation.
 
 
-##Microsoft DOS/Windows Installation
+## Microsoft DOS/Windows Installation
 The simplest way to make this with DELORIE DJGPP V2 system for C/C++ 
 (htpp://www.delorie.com) program is:
 
@@ -34,11 +36,11 @@ The simplest way to make this with DELORIE DJGPP V2 system for C/C++
 Steps 2 and 3 are optional.
 
 
-##A NOTE ON USAGE
+## A NOTE ON USAGE
 You may use rucnv with the same filenames for input and output.
 
 
-##BUGS, SUGGESTIONS, ETC.
+## BUGS, SUGGESTIONS, ETC.
 Please write me if you have trouble running rucnv, or if you 
 have suggestions or patches.
 
@@ -47,7 +49,7 @@ have suggestions or patches.
 	http://litwr2.atspace.eu
 
 
-##COPYRIGHT/LICENSE
+## COPYRIGHT/LICENSE
 All source code is Copyright (C) 2002 Lidovski Vladimir
 
 This program is distributed under the GNU General Public License, Version
