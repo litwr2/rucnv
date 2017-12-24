@@ -4,7 +4,7 @@ Encoding converter for texts in Russian language
 ## General Information
 Up to 14 different encodings are used to represent texts in Russian language (koi-7, koi-8r, cp866, cp1251, cp10007, utf-8, ...)! This program can perform conversion between them. It also can produce Unicode names for the symbol codes.
 
-It shows the unicodes that cannot be converted.  It allows to put two types of substitutions for inconvertible signs.  It may be a unicode number or a similar sign.
+It shows the unicodes that cannot be converted.  It allows to put two types of substitutions for the inconvertible signs.  It may be a unicode number or a similar sign.
 
 This program may also be used for transliteration (reversible substitution Cyrillic letters by Latin ones). Transliteration is the only way to make deal with Russian texts on the system without Cyrillic fonts. RUCNV knows two types of transliteration: GOST 7.79-2000 and KOI-7 based.
 
@@ -25,7 +25,7 @@ The simplest way to make this program is:
 
 ## Microsoft DOS/Windows Installation
 The simplest way to make this with DELORIE DJGPP V2 system for C/C++ 
-(htpp://www.delorie.com) program is:
+(http://www.delorie.com) program is:
 
 1. Type `gxx -o rucnv.exe rucnv.cpp -lstdcxx` to get the executable file.
 2. Type `strip rucnv.exe` to remove symbols from file.
