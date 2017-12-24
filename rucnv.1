@@ -1,0 +1,61 @@
+.TH RUCNV 1 "November 2002" "Linux"
+.rm ES
+.rm EE
+.de ES
+.PP
+.nf
+.in +0.5i
+..
+.de EE
+.in -0.5i
+.fi
+..
+.SH "NAME"
+rucnv \- Convert Russian encoding of given files from one encoding to another
+.SH "SYNOPSIS"
+.nf
+rucnv [conversion specification] [inputfile] [outputfile]
+      [-V]
+      [--help]
+.fi
+.SH "DESCRIPTION"
+The 
+.B rucnv
+program converts the encoding of characters in
+.I inputfile 
+or standard input from one coded character set to another. 
+If 
+.I outputfile 
+is missing then the result is written to standard output. 
+.PP
+Conversion specification has form
+.PP
+.B <source\-encoding><result\-encoding>{s}{u}
+.PP
+.B <id number of source encoding>
+is hexadecimal digit defining encoding of source file.
+.PP
+.B <id number of result encoding>
+is hexadecimal digit defining encoding of result file.
+.PP
+.B [s\-option] 
+makes symbolic substitutions for missing characters in result encoding. This 
+option can't be used simultaneously with u-option.
+.PP
+.B [u\-option]
+makes ASCII string unicode substitutions for missing characters in result 
+encoding. This option may also be used for change ASCII string unicode 
+representation to a symbol in appropriate coding table.
+.PP
+.B \-\-help
+.PP
+List known coded character sets and usage summary.
+.PP
+.B \-V
+.PP
+Output version information.
+.SH "AUTHOR"
+rucnv and this man page is written by Vladimir Lidovski.
+.SH REFERENCES
+.PP
+iconv (1)

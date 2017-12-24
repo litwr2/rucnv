@@ -1,0 +1,2 @@
+version 1.07:  The C++ syntax is adjusted to the new C++ standards
+version 1.08:  Added UTF-16BE support. Fixed minor compilation problem

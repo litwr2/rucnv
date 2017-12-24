@@ -1,0 +1,26 @@
+Begin4
+Title:		RUCNV
+Version:	1.08
+Entered-date:	2008-03-12
+Description:	Up to 14 different encodings are used to represent texts in Russian 
+		language (koi-7, koi-8r, cp866, cp1251, cp10007, 
+		utf-8/16, ...). This program can perform conversion between them. 
+		It can produce Unicode names for the symbol codes. 
+		This program may also be used for transliteration (reversible 
+		substitution Cyrillic letters by Latin ones). Transliteration is the only 
+		way to make deal with Russian texts on the system without Cyrillic fonts. 
+		RUCNV knows two types of transliteration: GOST 7.79-2000 and KOI-7 based.
+		RUCNV may be used for conversion any Russian or Unicode texts 
+		into the form which will be accepted by any 8-bit text editor and for 
+		the backward conversion.
+Keywords:	Cyrillic, Russian, editor, text, Unicode, ASCII, converter, transliteration
+Author:		litwr@yandex.ru (Vladimir Lidovski)
+Maintained-by:	litwr@yandex.ru (Vladimir Lidovski)
+Primary-site:	http://www.ibiblio.org/pub/linux/apps/misc
+		14K rucnv-1.0.8.tar.bz2
+		2K rucnv.lsm
+Alternate-site:
+Original-site:	http://litwr.boom.ru
+Platforms:	C++
+Copying-policy:	GPL
+End
