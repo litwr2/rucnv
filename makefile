@@ -1,5 +1,6 @@
-#CXXFLAGS = -gstabs 
+#CXXFLAGS = -g
 CXXFLAGS = -O3
+#LDFLAGS = -g -lstdc++
 LDFLAGS = -lstdc++ -s
 BINDIR = /usr/local/bin
 MANDIR = /usr/local/share/man/man1

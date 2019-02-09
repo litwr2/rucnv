@@ -2,13 +2,20 @@
 #include <cstdlib>
 #include <cstring>
 #include <map>
+#include <signal.h>
 #define b 65536 /* 8192, must be even */
 
 using namespace std;
 
+int get_break;
+
+void signalHandler(int signal) {
+  get_break = 1;
+}
+
 struct BUF {
   unsigned char *buf, back[12];
-  int bufp, bufl, eob, backl;
+  int bufp, bufl, eobv, backl;
   FILE *xi, *xo;
   BUF() {
     buf = new unsigned char [b];
@@ -23,10 +30,11 @@ struct BUF {
   unsigned char get_char();
   void back_char(int c);
   void put_char(int c);
+  int eobs() {return eobv || get_break;}
 } in, out;
 
 int BUF::wopen(char *s) {
-  eob = bufp = bufl = 0;
+  eobv = bufp = bufl = 0;
   if (s == 0)
     xo = stdout;
   else if ((xo = fopen(s, "wb")) == 0)
@@ -35,7 +43,7 @@ int BUF::wopen(char *s) {
 }
 
 int BUF::ropen(char *s) {
-  eob = bufp = bufl = backl = 0;
+  eobv = bufp = bufl = backl = 0;
   if (s == 0)
     xi = stdin;
   else if ((xi = fopen(s, "rb")) == 0) 
@@ -60,7 +68,7 @@ unsigned char BUF::get_char() {
     bufp = 0;
   }
   if (bufp >= bufl) {
-    eob = 1;
+    eobv = 1;
     return 0;
   }
   return buf[bufp++];
@@ -68,7 +76,7 @@ unsigned char BUF::get_char() {
 
 void BUF::back_char(int c) {
   back[backl++] = c;
-  eob = 0;
+  eobv = 0;
 }
 
 void BUF::put_char(int c) {
@@ -119,12 +127,12 @@ void u_cnv(int &t, int &w) {
     int c, i;
     for (i = 0; i < 2; i++) {
       addstr(s, c);
-      if (c != pre[i] || in.eob) 
+      if (c != pre[i] || in.eobs()) 
         goto L2;
     }
     for (i = 0; i < 4; i++) {
       addstr(s, c);
-      if (((c > '9' || c < '0') && (c > 'F' || c < 'A')) || in.eob) 
+      if (((c > '9' || c < '0') && (c > 'F' || c < 'A')) || in.eobs()) 
         goto L2;
     }
     if ((c = in.get_char()) == ']') {
@@ -142,7 +150,7 @@ void c00() {
   while (1) {
     l = in.get_char();
     h = in.get_char();
-    if (in.eob)
+    if (in.eobs())
       break;
     out.put_char(l);
     out.put_char(h);
@@ -154,7 +162,7 @@ void c0g() {
   while (1) {
     l = in.get_char();
     h = in.get_char();
-    if (in.eob)
+    if (in.eobs())
       break;
     out.put_char(h);
     out.put_char(l);
@@ -166,7 +174,7 @@ void c01() {
   while (1) {
     t = in.get_char();
     t += in.get_char() << 8;
-    if (in.eob)
+    if (in.eobs())
       break;
     if (t <= 0x7f)
       out.put_char(t);
@@ -201,7 +209,7 @@ void c10() {
         continue;
       }
     }
-    if (in.eob)
+    if (in.eobs())
       break;
     out.put_char(t & 0xff);
     out.put_char(t >> 8);
@@ -212,7 +220,7 @@ void c2toB0() {
   int t, w;
   while (1) {
     w = ctab[t = in.get_char()];
-    if (in.eob)
+    if (in.eobs())
       break;
     u_cnv(t, w);
     if (w == 0 && t != 0) {
@@ -235,7 +243,7 @@ void c02toB() {
     w = in.get_char();
     w += in.get_char() << 8;
     t = m[w];
-    if (in.eob)
+    if (in.eobs())
       break;
     if (t == 0) 
       if (ai == 1)
@@ -276,7 +284,7 @@ void cc0() {
         w = ctab[t + 128];
       else if (t == 36)
         w = 0xa4;
-    if (in.eob)
+    if (in.eobs())
       break;
     out.put_char(w & 0xff);
     out.put_char(w >> 8);
@@ -292,7 +300,7 @@ void c0c() {
     w = in.get_char();
     w += in.get_char() << 8;
     t = m[w];
-    if (in.eob)
+    if (in.eobs())
       break;
     if (t > 128 && t < 192 && t != 163 && t != 179 || t == 0) 
       if (ai == 1) {
@@ -326,7 +334,7 @@ void cd0() {
   while (1) {
     r[0] = 0;
     t = in.get_char();
-    if (in.eob)
+    if (in.eobs())
       break;
     if (t > 128) {
       unierr[t] = 1;
@@ -421,7 +429,7 @@ void c0d() {
   while (1) {
     w = in.get_char();
     w += in.get_char() << 8;
-    if (in.eob)
+    if (in.eobs())
       break;
     t = m[w];
     if (t > 128 && t < 192 && t != 163 && t != 179 || t == 0)
@@ -492,7 +500,7 @@ void c0f() {
   while (1) {
     l = in.get_char();
     h = in.get_char()*256 + l;
-    if (in.eob)
+    if (in.eobs())
       break;
     s = uninames[h];
     if (s == 0) {
@@ -515,7 +523,7 @@ void c0e() {
   while (1) {
     w = in.get_char();
     w += in.get_char() << 8;
-    if (in.eob)
+    if (in.eobs())
       break;
     t = m[w];
     if (t > 128 && t < 192 && t != 163 && t != 179 || t == 0)
@@ -585,7 +593,7 @@ void ce0() {
   while (1) {
     r[0] = 0;
     t = in.get_char();
-    if (in.eob)
+    if (in.eobs())
       break;
     if (t > 128) {
       unierr[t] = 1;
@@ -783,7 +791,7 @@ int main(int argc, char *argv[]) {
     case 2:
       if (argv[1][0] == '-') {
         if (!strcmp(argv[1], "-V"))
-          printf("Russian texts convertor V1.08 (C) 2008 V.Lidovski\n");
+          printf("Russian texts convertor V1.08 (C) 2008 V.Lidovski (GIT)\n");
         else if (!strcmp(argv[1], "--help"))
           mesg();
         else
@@ -800,6 +808,7 @@ int main(int argc, char *argv[]) {
       fprintf(stderr, "Incorrect number of parameters\n"); 
       exit(3);
   }
+  signal(SIGPIPE, signalHandler);
   if (strlen(argv[1]) == 3)
     if (argv[1][2] == 's') {
       ai = 1;
@@ -848,7 +857,7 @@ l5: fprintf(stderr, "%dIncorrect translation mode\n", mi);
     fprintf(stderr, "Can't open %s for write\n", fnout);
     return 1;
   }
-  if (ictab[mo]) 
+  if (ictab[mo])
     memcpy(ctab + 128, ictab[mo], 128*sizeof(int));
   (*cnvto[mo])();
   out.wclose();
