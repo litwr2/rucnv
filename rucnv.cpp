@@ -809,6 +809,7 @@ int main(int argc, char *argv[]) {
       exit(3);
   }
   signal(SIGPIPE, signalHandler);
+  signal(SIGINT, signalHandler);
   if (strlen(argv[1]) == 3)
     if (argv[1][2] == 's') {
       ai = 1;
